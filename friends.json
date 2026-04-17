@@ -94,5 +94,29 @@
     "bio": "The bass player in our weekend garage band. We've been playing classic rock covers together for years.",
     "goal": 14,
     "next_due_date": "2025-05-18"
+  },
+  {
+    "id": 9,
+    "name": "Liam O'Connor",
+    "picture": "https://i.pravatar.cc/150?u=liamo",
+    "email": "liam.oc@devstudio.com",
+    "days_since_contact": 25,
+    "status": "almost due",
+    "tags": ["work", "tech"],
+    "bio": "Lead developer at DevStudio. We used to pair program on Ruby projects and still discuss system architecture over coffee.",
+    "goal": 30,
+    "next_due_date": "2025-05-01"
+  },
+  {
+    "id": 10,
+    "name": "Maya Patel",
+    "picture": "https://i.pravatar.cc/150?u=mayap",
+    "email": "maya.yoga@zenflow.com",
+    "days_since_contact": 5,
+    "status": "on-track",
+    "tags": ["fitness", "meditation"],
+    "bio": "Met at a meditation retreat. She is a yoga instructor who gives the best wellness advice and book recommendations.",
+    "goal": 21,
+    "next_due_date": "2025-05-13"
   }
 ]
