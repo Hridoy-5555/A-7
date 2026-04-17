@@ -7,8 +7,16 @@ export default function NotFound() {
   return (
     <main className="min-h-screen bg-[#f5f7f6]">
       <Navbar />
-      <div className="flex flex-col items-center justify-center pt-32 px-10 text-center">
-        <h1 className="text-9xl font-black text-gray-200">404</h1>
+      <style jsx>{`
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+          100% { transform: translateY(0px); }
+        }
+        .floating { animation: float 4s ease-in-out infinite; }
+      `}</style>
+      <div className="flex flex-col items-center justify-center pt-32 px-10 text-center animate-in fade-in zoom-in duration-500">
+        <h1 className="text-9xl font-black text-gray-200 floating">404</h1>
         <h2 className="text-2xl font-bold text-gray-800 mt-4">Page not found</h2>
         <p className="text-gray-500 mt-2 max-w-md">
           Oops! The friend or page you are looking for doesn't exist or has moved.

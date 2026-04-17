@@ -31,7 +31,7 @@ export default function TimelinePage() {
   return (
     <main className="min-h-screen bg-[#f5f7f6]">
       <Navbar />
-      <div className="max-w-4xl mx-auto p-10">
+      <div className="max-w-4xl mx-auto p-10 animate-in fade-in duration-700">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Timeline</h1>
           <p className="text-gray-500 mt-2">A history of your meaningful connections.</p>
@@ -39,8 +39,12 @@ export default function TimelinePage() {
 
         <div className="space-y-4">
           {history.length > 0 ? (
-            history.map((entry) => (
-              <div key={entry.id} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#1f7a63]/30 transition-all">
+            history.map((entry, index) => (
+              <div 
+                key={entry.id} 
+                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#1f7a63]/30 transition-all hover:shadow-md animate-in fade-in slide-in-from-bottom-4 fill-mode-both"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
                 <div className="flex items-center gap-5">
                   <div className="p-3 bg-gray-50 rounded-xl group-hover:bg-white transition-colors">
                     {getIcon(entry.type)}
