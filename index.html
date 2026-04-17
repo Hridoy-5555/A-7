@@ -89,9 +89,23 @@
 
         .friend-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-template-columns: repeat(1, 1fr);
             gap: 20px;
         }
+
+        /* 4-column grid on large screens */
+        @media (min-width: 1024px) {
+            .friend-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .friend-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         .friend-card {
             background: white;
             padding: 20px;
@@ -101,10 +115,12 @@
             transition: transform 0.2s;
             cursor: pointer;
         }
-        .friend-card:hover { transform: translateY(-5px); }
-        .on-track { border-left-color: #10b981; }
-        .almost-due { border-left-color: #f59e0b; }
-        .overdue { border-left-color: #ef4444; }
+        .friend-card:hover { transform: translateY(-5px) scale(1.02); }
+        
+        /* Status Colors - Card Backgrounds and Borders */
+        .on-track { border-left: 4px solid #10b981; background-color: #f0fdf4; }
+        .almost-due { border-left: 4px solid #f59e0b; background-color: #fffbeb; }
+        .overdue { border-left: 4px solid #ef4444; background-color: #fef2f2; }
 
         .friend-img {
             width: 50px;
@@ -112,6 +128,60 @@
             border-radius: 50%;
             margin-bottom: 10px;
             object-fit: cover;
+        }
+
+        /* Friend Detail View Styles */
+        .detail-layout { display: grid; grid-template-columns: 350px 1fr; gap: 30px; margin-top: 20px; }
+        @media (max-width: 900px) { .detail-layout { grid-template-columns: 1fr; } }
+
+        .detail-card { 
+            background: white; padding: 30px; border-radius: 20px; border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .detail-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; }
+        
+        .action-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 25px; }
+        .btn-action { 
+            width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 10px; 
+            background: white; cursor: pointer; text-align: left; font-weight: 600; 
+            display: flex; align-items: center; gap: 12px; transition: all 0.2s;
+        }
+        .btn-action:hover { background: #f9fafb; }
+        .btn-delete { color: #ef4444; }
+
+        .right-section { display: flex; flex-direction: column; gap: 20px; }
+        .stats-mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .stat-mini-card { background: white; padding: 20px; border-radius: 16px; border: 1px solid #e5e7eb; text-align: center; }
+        .stat-mini-card h4 { margin: 0; font-size: 1.25rem; color: var(--text); }
+        .stat-mini-card p { margin: 5px 0 0; font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; font-weight: 700; }
+
+        .info-box { background: white; padding: 24px; border-radius: 20px; border: 1px solid #e5e7eb; }
+        .info-box h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; }
+        
+        .checkin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .checkin-btn { 
+            padding: 15px; border: 1px solid #e5e7eb; border-radius: 12px; background: white; 
+            cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.2s;
+        }
+        .checkin-btn:hover { background: var(--bg); border-color: var(--primary); color: var(--primary); }
+        .checkin-btn i { font-size: 1.4rem; }
+
+        .btn-edit { font-size: 0.8rem; color: var(--primary); cursor: pointer; font-weight: 600; }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 8px 0;
+        }
+        .tag { 
+            font-size: 0.65rem; 
+            color: var(--primary); 
+            background: rgba(31, 122, 99, 0.1); 
+            padding: 2px 10px; 
+            border-radius: 999px; 
+            font-weight: 700;
+            text-transform: lowercase;
         }
 
         /* Loading Spinner */
@@ -177,6 +247,9 @@
             text-align: center;
         }
         .footer-content { max-width: 1100px; margin: 0 auto; color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; }
+        .footer-social { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .footer-social a { color: white; opacity: 0.8; font-size: 1.25rem; text-decoration: none; transition: all 0.2s; }
+        .footer-social a:hover { opacity: 1; transform: translateY(-2px); }
 
         /* Toast Styles */
         #toast {
@@ -224,93 +297,72 @@
         <div id="home" class="page active" style="display:none">
             <div class="hero">
                 <h1>Friends to keep close in your life</h1>
-                <p style="color:var(--text-light); margin-top:10px; font-size:1.1rem;">Your personal shelf of meaningful connections. Browse, tend, and nurture the
-relationships that matter most.</p>
+                <p style="color:var(--text-light); margin-top:10px; font-size:1.1rem;">KeenKeeper: Your personal shelf of meaningful connections. Browse, tend, and nurture the relationships that matter most.</p>
                 <button class="btn-add"><i class="fas fa-user-plus"></i> Add Friend</button>
             </div>
 
             <div class="summary-grid">
-                <div class="summary-card"><h3>10</h3><p>Total Friends</p></div>
-                <div class="summary-card"><h3>5</h3><p>On Track</p></div>
-                <div class="summary-card"><h3>5</h3><p>Need Attention</p></div>
-                <div class="summary-card"><h3>12</h3><p>Interactions This Month</p></div>
+                <div class="summary-card"><h3 id="stat-total">0</h3><p>Total Friends</p></div>
+                <div class="summary-card" id="stat-ontrack"><h3>5</h3><p>On Track</p></div>
+                <div class="summary-card" id="stat-attention"><h3>5</h3><p>Need Attention</p></div>
+                <div class="summary-card"><h3 id="stat-interactions">0</h3><p>Logged Interactions</p></div>
             </div>
 
             <h3>Your Friends</h3>
             <div class="friend-grid" id="main-grid">
-                <div class="friend-card on-track" onclick="showToast('Call logged for Sarah')">
-                    <img src="https://i.pravatar.cc/150?u=sarahj" alt="Sarah Jenkins" class="friend-img">
-                    <h4 style="margin:0">Sarah Jenkins</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">3 days ago</p>
-                    <span class="status-badge">on-track</span>
+                <!-- Friends will be loaded from JSON -->
+            </div>
+        </div>
+
+        <!-- Friend Detail Page -->
+        <div id="friend-detail" class="page">
+            <button onclick="showPage('home')" style="background:none; border:none; color:var(--primary); cursor:pointer; font-weight:bold; margin-bottom:10px; padding:0;">
+                <i class="fas fa-arrow-left"></i> Back to Friends
+            </button>
+            
+            <div class="detail-layout">
+                <div class="detail-left">
+                    <div class="detail-card" id="detail-main-card">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-action"><i class="fas fa-clock"></i> Snooze 2 Weeks</button>
+                        <button class="btn-action"><i class="fas fa-archive"></i> Archive</button>
+                        <button class="btn-action btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
                 </div>
-                <div class="friend-card overdue">
-                    <img src="https://i.pravatar.cc/150?u=marcust" alt="Marcus Thompson" class="friend-img">
-                    <h4 style="margin:0">Marcus Thompson</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">45 days ago</p>
-                    <span class="status-badge">overdue</span>
-                </div>
-                <div class="friend-card almost-due">
-                    <img src="https://i.pravatar.cc/150?u=elenar" alt="Elena Rodriguez" class="friend-img">
-                    <h4 style="margin:0">Elena Rodriguez</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">12 days ago</p>
-                    <span class="status-badge">almost due</span>
-                </div>
-                <div class="friend-card on-track">
-                    <img src="https://i.pravatar.cc/150?u=davidc" alt="David Chen" class="friend-img">
-                    <h4 style="margin:0">David Chen</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">5 days ago</p>
-                    <span class="status-badge">on-track</span>
-                </div>
-                <div class="friend-card overdue">
-                    <img src="https://i.pravatar.cc/150?u=aishak" alt="Aisha Khan" class="friend-img">
-                    <h4 style="margin:0">Aisha Khan</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">90 days ago</p>
-                    <span class="status-badge">overdue</span>
-                </div>
-                <div class="friend-card on-track">
-                    <img src="https://i.pravatar.cc/150?u=robertm" alt="Robert Miller" class="friend-img">
-                    <h4 style="margin:0">Robert Miller</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">2 days ago</p>
-                    <span class="status-badge">on-track</span>
-                </div>
-                <div class="friend-card almost-due">
-                    <img src="https://i.pravatar.cc/150?u=sophied" alt="Sophie Dubois" class="friend-img">
-                    <h4 style="margin:0">Sophie Dubois</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">25 days ago</p>
-                    <span class="status-badge">almost due</span>
-                </div>
-                <div class="friend-card on-track">
-                    <img src="https://i.pravatar.cc/150?u=jamesw" alt="James Wilson" class="friend-img">
-                    <h4 style="margin:0">James Wilson</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">8 days ago</p>
-                    <span class="status-badge">on-track</span>
-                </div>
-                <div class="friend-card almost-due">
-                    <img src="https://i.pravatar.cc/150?u=liamo" alt="Liam O'Connor" class="friend-img">
-                    <h4 style="margin:0">Liam O'Connor</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">25 days ago</p>
-                    <span class="status-badge">almost due</span>
-                </div>
-                <div class="friend-card on-track">
-                    <img src="https://i.pravatar.cc/150?u=mayap" alt="Maya Patel" class="friend-img">
-                    <h4 style="margin:0">Maya Patel</h4>
-                    <p style="margin:5px 0; color:var(--text-light); font-size:0.9rem">5 days ago</p>
-                    <span class="status-badge">on-track</span>
+
+                <div class="detail-right">
+                    <div class="right-section">
+                        <div class="stats-mini-grid">
+                            <div class="stat-mini-card"><h4 id="det-days">0</h4><p>Days Since</p></div>
+                            <div class="stat-mini-card"><h4 id="det-goal">0</h4><p>Goal (Days)</p></div>
+                            <div class="stat-mini-card"><h4 id="det-due" style="font-size: 0.9rem; padding-top: 5px;">-</h4><p>Next Due</p></div>
+                        </div>
+
+                        <div class="info-box">
+                            <h3>Relationship Goal <span class="btn-edit">Edit</span></h3>
+                            <p id="det-goal-desc" style="margin:0; color:var(--text-light);"></p>
+                        </div>
+
+                        <div class="info-box">
+                            <h3>Quick Check-In</h3>
+                            <div class="checkin-grid">
+                                <button class="checkin-btn" id="btn-call"><i class="fas fa-phone"></i><span>Call</span></button>
+                                <button class="checkin-btn" id="btn-text"><i class="fas fa-comment"></i><span>Text</span></button>
+                                <button class="checkin-btn" id="btn-video"><i class="fas fa-video"></i><span>Video</span></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Timeline Page -->
         <div id="timeline" class="page">
-            <h2>Interaction Timeline</h2>
-            <div class="timeline-item">
-                <div><strong>Called Emma Wilson</strong><br><small>Oct 24, 2023</small></div>
-                <i class="fas fa-phone" style="color:var(--primary)"></i>
-            </div>
-            <div class="timeline-item">
-                <div><strong>Texted Liam Johnson</strong><br><small>Oct 22, 2023</small></div>
-                <i class="fas fa-comment" style="color:var(--primary)"></i>
+            <h1 style="margin-bottom: 30px;">Timeline</h1>
+            <div id="timeline-list">
+                <!-- Dynamic content -->
             </div>
         </div>
 
@@ -335,22 +387,125 @@ relationships that matter most.</p>
 
     <footer>
         <div class="footer-content">
+            <div class="footer-social">
+                <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
             <p>&copy; 2024 KeenKeeper. All rights reserved.</p>
             <p style="margin-top:5px">Designed for meaningful connections.</p>
         </div>
     </footer>
 
     <script>
-        // Simulate Loading Data
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loading-overlay').style.opacity = '0';
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('friends.json');
+                const friends = await response.json();
+                window.friendsData = friends; // Global store for detail view
+                renderFriends(friends);
+
+                // Hide loading overlay
                 setTimeout(() => {
-                    document.getElementById('loading-overlay').style.display = 'none';
-                    document.getElementById('home').style.display = 'block';
-                }, 500);
-            }, 1000);
+                    document.getElementById('loading-overlay').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loading-overlay').style.display = 'none';
+                        document.getElementById('home').style.display = 'block';
+                    }, 500);
+                }, 800);
+            } catch (error) {
+                console.error("Failed to load friends:", error);
+            }
         });
+
+        function renderFriends(friends) {
+            const grid = document.getElementById('main-grid');
+            
+            // Update Stats
+            const onTrack = friends.filter(f => f.status === 'on-track').length;
+            document.getElementById('stat-total').innerText = friends.length;
+            document.getElementById('stat-ontrack').querySelector('h3').innerText = onTrack;
+            document.getElementById('stat-attention').querySelector('h3').innerText = friends.length - onTrack;
+            const history = JSON.parse(localStorage.getItem('keenkeeper_timeline') || '[]');
+            document.getElementById('stat-interactions').innerText = history.length;
+
+            grid.innerHTML = friends.map(friend => {
+                const statusClass = friend.status.replace(' ', '-');
+                const dayText = friend.days_since_contact === 1 ? 'day' : 'days';
+                return `
+                    <div class="friend-card ${statusClass}" onclick="showFriendDetail(${friend.id})">
+                        <img src="${friend.picture}" alt="${friend.name}" class="friend-img">
+                        <h4 style="margin:0; font-size: 1.1rem; color: var(--text);">${friend.name}</h4>
+                        <p style="margin:5px 0; color:var(--text-light); font-size:0.85rem">${friend.days_since_contact} ${dayText} ago</p>
+                        <div class="tags-container">
+                            ${friend.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                        </div>
+                        <span class="status-badge">${friend.status}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showFriendDetail(id) {
+            const friend = window.friendsData.find(f => f.id === id);
+            if (!friend) return;
+
+            const detailCard = document.getElementById('detail-main-card');
+            const statusClass = friend.status.replace(' ', '-');
+            
+            detailCard.className = `detail-card ${statusClass}`;
+            detailCard.innerHTML = `
+                <img src="${friend.picture}" class="detail-img" alt="${friend.name}">
+                <h1 style="margin:0; font-size: 1.75rem;">${friend.name}</h1>
+                <div><span class="status-badge" style="margin: 10px 0 15px 0;">${friend.status}</span></div>
+                <div class="tags-container" style="margin-bottom: 20px;">
+                    ${friend.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                </div>
+                <p style="color:var(--text-light); line-height: 1.6; margin-bottom: 20px;">${friend.bio}</p>
+                <p style="font-size: 0.9rem; font-weight: 600; color: var(--primary);"><i class="fas fa-envelope"></i> ${friend.email}</p>
+            `;
+
+            document.getElementById('det-days').innerText = friend.days_since_contact;
+            document.getElementById('det-goal').innerText = friend.goal;
+            document.getElementById('det-due').innerText = friend.next_due_date;
+            document.getElementById('det-goal-desc').innerText = `Stay in touch with ${friend.name.split(' ')[0]} every ${friend.goal} days.`;
+
+            // Setup buttons
+            ['Call', 'Text', 'Video'].forEach(type => {
+                document.getElementById(`btn-${type.toLowerCase()}`).onclick = () => logInteraction(type, friend.name);
+            });
+
+            showPage('friend-detail');
+        }
+
+        function logInteraction(type, name) {
+            const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const entry = { type, name, date, id: Date.now() };
+            
+            const history = JSON.parse(localStorage.getItem('keenkeeper_timeline') || '[]');
+            localStorage.setItem('keenkeeper_timeline', JSON.stringify([entry, ...history]));
+            
+            showToast(`${type} with ${name} logged!`);
+            document.getElementById('stat-interactions').innerText = history.length + 1;
+        }
+
+        function updateTimelineView() {
+            const container = document.getElementById('timeline-list');
+            const history = JSON.parse(localStorage.getItem('keenkeeper_timeline') || '[]');
+            
+            if (history.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#999; margin-top:40px;">No interactions logged yet.</p>';
+                return;
+            }
+
+            container.innerHTML = history.map(item => `
+                <div class="timeline-item">
+                    <div><strong>${item.type} with ${item.name}</strong><br><small>${item.date}</small></div>
+                    <i class="fas fa-${item.type === 'Call' ? 'phone' : item.type === 'Text' ? 'comment' : 'video'}" style="color:var(--primary)"></i>
+                </div>
+            `).join('');
+        }
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -364,6 +519,8 @@ relationships that matter most.</p>
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             // Show target page
             document.getElementById(pageId).classList.add('active');
+            
+            if (pageId === 'timeline') updateTimelineView();
             
             // Update Navbar links
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
