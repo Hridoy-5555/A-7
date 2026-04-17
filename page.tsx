@@ -158,7 +158,7 @@ export default function FriendDetailPage() {
             {/* ③ Quick Check-In Card */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <h3 className="text-lg font-bold text-gray-800 mb-4">Quick Check-In</h3>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <button onClick={() => handleCheckIn('Call')} className="flex flex-col items-center gap-2 p-4 border border-gray-50 rounded-xl hover:bg-green-50 hover:border-green-100 group transition-all">
                   <div className="p-3 bg-gray-50 rounded-full text-gray-600 group-hover:bg-green-100 group-hover:text-green-600 transition-colors">
                     <Phone size={24} />
