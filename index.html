@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeenKeeper - Friendship Manager</title>
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -19,7 +18,6 @@
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { margin: 0; background-color: var(--bg); color: var(--text); }
 
-        /* Navbar Styles */
         nav {
             display: flex;
             justify-content: space-between;
@@ -52,12 +50,10 @@
             background: rgba(31, 122, 99, 0.1);
         }
 
-        /* Container */
         .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
         .page { display: none; }
         .page.active { display: block; }
 
-        /* Home Page Styles */
         .hero { text-align: center; margin-bottom: 40px; }
         .btn-add {
             background: var(--primary);
@@ -117,7 +113,6 @@
         }
         .friend-card:hover { transform: translateY(-5px) scale(1.02); }
         
-        /* Status Colors - Card Backgrounds and Borders */
         .on-track { border-left: 4px solid #10b981; background-color: #f0fdf4; }
         .almost-due { border-left: 4px solid #f59e0b; background-color: #fffbeb; }
         .overdue { border-left: 4px solid #ef4444; background-color: #fef2f2; }
@@ -130,7 +125,6 @@
             object-fit: cover;
         }
 
-        /* Friend Detail View Styles */
         .detail-layout { display: grid; grid-template-columns: 350px 1fr; gap: 30px; margin-top: 20px; }
         @media (max-width: 900px) { .detail-layout { grid-template-columns: 1fr; } }
 
@@ -184,7 +178,6 @@
             text-transform: lowercase;
         }
 
-        /* Loading Spinner */
         #loading-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -220,7 +213,6 @@
         .almost-due .status-badge { background: #fef3c7; color: #92400e; }
         .overdue .status-badge { background: #fee2e2; color: #991b1b; }
 
-        /* Timeline Styles */
         .timeline-item {
             background: white;
             padding: 15px 20px;
@@ -231,14 +223,12 @@
             align-items: center;
         }
 
-        /* Stats Styles */
         .stats-box { background: white; padding: 30px; border-radius: 12px; }
         .bar-container { display: flex; align-items: flex-end; gap: 20px; height: 200px; margin-top: 20px; }
         .bar { background: var(--primary); width: 60px; border-radius: 4px 4px 0 0; position: relative; }
         .bar span { position: absolute; top: -25px; width: 100%; text-align: center; font-weight: bold; }
         .bar-label { text-align: center; margin-top: 10px; font-weight: 500; }
 
-        /* Footer Styles */
         footer {
             margin-top: 80px;
             padding: 40px 20px;
@@ -251,7 +241,6 @@
         .footer-social a { color: white; opacity: 0.8; font-size: 1.25rem; text-decoration: none; transition: all 0.2s; }
         .footer-social a:hover { opacity: 1; transform: translateY(-2px); }
 
-        /* Toast Styles */
         #toast {
             position: fixed;
             bottom: 20px;
@@ -267,7 +256,6 @@
         }
         #toast.show { transform: translateX(-50%) translateY(0); }
 
-        /* Mobile Responsiveness */
         @media (max-width: 768px) {
             nav { padding: 0 20px; }
             .nav-links a span { display: none; }
@@ -293,7 +281,6 @@
     </nav>
 
     <div class="container">
-        <!-- Home Page -->
         <div id="home" class="page active" style="display:none">
             <div class="hero">
                 <h1>Friends to keep close in your life</h1>
@@ -310,11 +297,9 @@
 
             <h3>Your Friends</h3>
             <div class="friend-grid" id="main-grid">
-                <!-- Friends will be loaded from JSON -->
             </div>
         </div>
 
-        <!-- Friend Detail Page -->
         <div id="friend-detail" class="page">
             <button onclick="showPage('home')" style="background:none; border:none; color:var(--primary); cursor:pointer; font-weight:bold; margin-bottom:10px; padding:0;">
                 <i class="fas fa-arrow-left"></i> Back to Friends
@@ -323,7 +308,6 @@
             <div class="detail-layout">
                 <div class="detail-left">
                     <div class="detail-card" id="detail-main-card">
-                        <!-- Populated by JS -->
                     </div>
                     <div class="action-buttons">
                         <button class="btn-action"><i class="fas fa-clock"></i> Snooze 2 Weeks</button>
@@ -358,15 +342,12 @@
             </div>
         </div>
 
-        <!-- Timeline Page -->
         <div id="timeline" class="page">
             <h1 style="margin-bottom: 30px;">Timeline</h1>
             <div id="timeline-list">
-                <!-- Dynamic content -->
             </div>
         </div>
 
-        <!-- Stats Page -->
         <div id="stats" class="page">
             <div class="stats-box">
                 <h2>Friendship Analytics</h2>
@@ -403,10 +384,9 @@
             try {
                 const response = await fetch('friends.json');
                 const friends = await response.json();
-                window.friendsData = friends; // Global store for detail view
+                window.friendsData = friends;
                 renderFriends(friends);
 
-                // Hide loading overlay
                 setTimeout(() => {
                     document.getElementById('loading-overlay').style.opacity = '0';
                     setTimeout(() => {
@@ -422,7 +402,6 @@
         function renderFriends(friends) {
             const grid = document.getElementById('main-grid');
             
-            // Update Stats
             const onTrack = friends.filter(f => f.status === 'on-track').length;
             document.getElementById('stat-total').innerText = friends.length;
             document.getElementById('stat-ontrack').querySelector('h3').innerText = onTrack;
@@ -471,7 +450,6 @@
             document.getElementById('det-due').innerText = friend.next_due_date;
             document.getElementById('det-goal-desc').innerText = `Stay in touch with ${friend.name.split(' ')[0]} every ${friend.goal} days.`;
 
-            // Setup buttons
             ['Call', 'Text', 'Video'].forEach(type => {
                 document.getElementById(`btn-${type.toLowerCase()}`).onclick = () => logInteraction(type, friend.name);
             });
@@ -515,14 +493,11 @@
         }
 
         function showPage(pageId) {
-            // Hide all pages
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            // Show target page
             document.getElementById(pageId).classList.add('active');
             
             if (pageId === 'timeline') updateTimelineView();
             
-            // Update Navbar links
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
             document.getElementById('link-' + pageId).classList.add('active');
         }
