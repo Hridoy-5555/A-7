@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import Navbar from '../../Navbar';
+import Navbar from './Navbar';
 import { Phone, MessageSquare, Video, Calendar } from 'lucide-react';
 
 interface TimelineEntry {
